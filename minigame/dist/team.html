@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ĐẤU TRƯỜNG LỊCH SỬ — Đảng ra đời (1930 – 1945)</title>
+  <meta name="description" content="Gameshow lớp học môn Lịch sử Đảng Cộng sản Việt Nam (VNR202) – Nhóm 4: Đảng ra đời, từ khủng hoảng đường lối đến tổ chức tiên phong (1930 – 1945).">
+  
+  <!-- Google Fonts: Be Vietnam Pro & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=JetBrains+Mono:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <script type="module" crossorigin src="/assets/team-qUqHlASG.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vietnamVisuals-DI73Jhac.js">
+  <link rel="stylesheet" crossorigin href="/assets/vietnamVisuals-BV1Nrb1Y.css">
+  <link rel="stylesheet" crossorigin href="/assets/team-BgOb7H1K.css">
+</head>
+<body>
+  <!-- 0-5s Cinematic Intro Overlay -->
+  <div class="cinematic-intro-overlay" id="cinematicIntro">
+    <div class="intro-light-beam" id="introLightBeam"></div>
+    <div class="intro-drum-motif" id="introDrumMotif"></div>
+    <div class="intro-title-box" id="introTitleBox">
+      <h1 class="intro-main-title">ĐẤU TRƯỜNG LỊCH SỬ</h1>
+      <h2 class="intro-sub-title">Đảng ra đời: Từ khủng hoảng đường lối đến tổ chức tiên phong</h2>
+      <p style="color: var(--text-secondary); margin-top: 8px; font-size: 1.1rem;">
+        VNR202 • Nhóm 4 • 1930 – 1945
+      </p>
+    </div>
+    <button class="intro-skip-btn" id="btnSkipIntro">Bỏ qua Intro</button>
+  </div>
+
+  <!-- Round Sweep Transition Banner -->
+  <div class="round-sweep-banner" id="roundSweepBanner">
+    <div class="sweep-drum-center"></div>
+    <div class="sweep-title-text" id="sweepTitleText">VÒNG 1: ĐÚNG HAY SAI?</div>
+    <div class="sweep-light-bar"></div>
+  </div>
+
+  <!-- Turn Switch Transition Overlay (1-1.5s) -->
+  <div class="turn-switch-overlay" id="turnSwitchOverlay">
+    <div class="turn-switch-label">LƯỢT TIẾP THEO</div>
+    <div class="turn-switch-emblem-display" id="turnSwitchEmblem"></div>
+    <div class="turn-switch-team-name" id="turnSwitchTeamName">ĐỘI NHÂN NGHĨA</div>
+    <div class="turn-switch-subtag">Sẵn Sàng Thi Đấu!</div>
+  </div>
+
+  <div class="app-viewport">
+    <!-- Visual Heritage Layers -->
+    <div class="dong-son-backdrop" id="dongSonBackdrop"></div>
+    <div class="vietnam-landscape-bg" id="vietnamLandscape"></div>
+
+    <!-- Canvas layers -->
+    <canvas id="particleCanvas"></canvas>
+    <canvas id="vietnamCanvas"></canvas>
+    <canvas id="confettiCanvas"></canvas>
+    <div class="bg-grid-overlay"></div>
+
+    <div class="stage-container">
+      <!-- Gameshow Television Broadcast HUD Bar -->
+      <header class="broadcast-top-bar" id="topHud" style="display: none;">
+        <!-- Left: Gameshow Brand Segment -->
+        <div class="hud-segment hud-brand-segment" onclick="window.gameApp && window.gameApp.openRulesModal()" style="cursor: pointer;" title="Xem Luật Thi Đấu">
+          <div class="hud-brand-title">ĐẤU TRƯỜNG LỊCH SỬ</div>
+          <div class="hud-brand-sub">VNR202 • NHÓM 4</div>
+        </div>
+
+        <div class="hud-divider"></div>
+
+        <!-- Center: Round & Question Status Segment -->
+        <div class="hud-segment hud-round-segment" id="hudRoundBlock">
+          <div class="hud-round-label" id="hudRoundNum">VÒNG 1</div>
+          <div class="hud-round-name" id="hudRoundTitle">ĐÚNG HAY SAI?</div>
+          <span class="hud-question-label" id="hudQuestionPill">CÂU 01/05</span>
+        </div>
+
+        <div class="hud-divider"></div>
+
+        <!-- Right: Active Team Showcase Segment -->
+        <div class="hud-segment hud-team-segment" id="hudActiveTeamArea">
+          <span class="hud-team-tag">ĐỘI ĐANG CHƠI</span>
+          <div class="hud-team-display">
+            <div class="hud-emblem-slot" id="hudActiveEmblem"></div>
+            <span class="hud-active-name" id="hudActiveTeamName">ĐỘI NHÂN NGHĨA</span>
+          </div>
+        </div>
+
+        <div class="hud-divider"></div>
+
+        <!-- Far Right: Console Control Badges -->
+        <div class="hud-segment hud-controls-segment">
+          <button class="btn btn-hud-badge btn-hud-reset" id="btnHudResetGame" onclick="window.gameApp.promptResetMatch()" title="Reset điểm và bắt đầu màn đấu mới">
+            <span>CHƠI MÀN MỚI</span>
+          </button>
+          <button class="btn btn-hud-badge" id="btnHudLeaderboard" onclick="window.gameApp.openLeaderboard()">
+            <span>BẢNG XẾP HẠNG</span>
+          </button>
+          <button class="btn btn-icon" id="btnToggleMute" title="Bật/Tắt Âm Thanh" onclick="window.gameApp.toggleMute()"></button>
+          <button class="btn btn-icon" id="btnToggleFullscreen" title="Toàn Màn Hình" onclick="window.gameApp.toggleFullscreen()"></button>
+        </div>
+      </header>
+
+      <!-- Main Stage Container (dynamically populated) -->
+      <main id="screenContainer" class="screen-container"></main>
+    </div>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. Explanation / Debrief Modal -->
+  <div class="modal-backdrop" id="explanationModal">
+    <div class="modal-sheet" style="max-width: 900px;">
+      <button class="modal-close-btn" onclick="document.getElementById('explanationModal').classList.remove('active')">✕</button>
+      <h2 class="modal-title">PHÂN TÍCH & GIẢI THÍCH CHI TIẾT</h2>
+      <p class="modal-subtitle">Lịch sử Đảng Cộng sản Việt Nam 1930 – 1945 & bài học thực tiễn hôm nay</p>
+      
+      <div id="explanationContent"></div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 14px; margin-top: 24px;">
+        <button class="btn btn-gold" onclick="document.getElementById('explanationModal').classList.remove('active')">
+          <span>ĐÃ RÕ • TIẾP TỤC ➔</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Leaderboard Modal (BẢNG XẾP HẠNG) -->
+  <div class="modal-backdrop" id="leaderboardModal">
+    <div class="modal-sheet" style="max-width: 820px;">
+      <button class="modal-close-btn" onclick="document.getElementById('leaderboardModal').classList.remove('active')">✕</button>
+      <div style="text-align: center;">
+        <h2 class="modal-title">BẢNG XẾP HẠNG ĐẤU TRƯỜNG</h2>
+        <p class="modal-subtitle">Thứ hạng trực tiếp của các đội theo điểm số thực tế</p>
+      </div>
+
+      <div id="leaderboardContent"></div>
+
+      <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 24px;">
+        <button class="btn btn-crimson" id="btnResetMatchFromLb" onclick="window.gameApp.promptResetMatch()">
+          <span>🔄 RESET ĐIỂM & CHƠI MÀN MỚI</span>
+        </button>
+        <button class="btn btn-glass" id="btnResetScoresOnlyLb" onclick="window.gameApp.promptResetScoresOnly()">
+          <span>🎯 ĐẶT LẠI ĐIỂM VỀ 0</span>
+        </button>
+        <button class="btn btn-glass" onclick="document.getElementById('leaderboardModal').classList.remove('active')">
+          <span>ĐÓNG BẢNG ĐIỂM</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Rules Modal (LUẬT CHƠI) -->
+  <div class="modal-backdrop" id="rulesModal">
+    <div class="modal-sheet">
+      <button class="modal-close-btn" onclick="document.getElementById('rulesModal').classList.remove('active')">✕</button>
+      <h2 class="modal-title">LUẬT CHƠI & CẤU TRÚC ĐẤU TRƯỜNG</h2>
+      <p class="modal-subtitle">Gameshow thi đấu trực tiếp luân phiên 2 – 5 đội môn Lịch sử Đảng Cộng sản Việt Nam (VNR202)</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin: 16px 0;">
+        <div class="debrief-card ans-card">
+          <div class="debrief-badge" style="color: #10b981;">VÒNG 1: ĐÚNG HAY SAI?</div>
+          <div style="font-size: 1rem; color: #fff; margin-top: 8px;">
+            Mỗi đội 1 câu bốc ngẫu nhiên, <strong>ĐÚNG / SAI</strong> trong 15s. Mỗi câu chỉ 1 đội trả lời luân phiên (+10đ/câu).
+          </div>
+        </div>
+
+        <div class="debrief-card why-card">
+          <div class="debrief-badge" style="color: var(--gold-400);">VÒNG 2: DÒNG CHẢY LỊCH SỬ</div>
+          <div style="font-size: 1rem; color: #fff; margin-top: 8px;">
+            Mỗi đội 1 câu bốc ngẫu nhiên: trắc nghiệm 4 lựa chọn về khủng hoảng đường lối, sự ra đời của Đảng và 3 cao trào cách mạng. Thi đấu luân phiên. Nếu sai, các đội khác có cơ hội <strong>CƯỚP ĐIỂM</strong>! (+20đ/câu).
+          </div>
+        </div>
+
+        <div class="debrief-card lesson-card">
+          <div class="debrief-badge" style="color: #ef4444;">VÒNG 3: VẬN DỤNG HAY CẦN TRÁNH?</div>
+          <div style="font-size: 1rem; color: #fff; margin-top: 8px;">
+            Mỗi đội 1 tình huống bốc ngẫu nhiên: hành vi nào <strong>VẬN DỤNG (🟢)</strong> bài học lịch sử, hành vi nào <strong>CẦN TRÁNH (🔴)</strong>. Thi đấu luân phiên (+20đ/câu, không cướp điểm vì chỉ có 2 lựa chọn).
+          </div>
+        </div>
+
+        <div class="debrief-card" style="border-left: 5px solid var(--accent-cyan);">
+          <div class="debrief-badge" style="color: var(--accent-cyan);">VÒNG 4: TỪ LỊCH SỬ ĐẾN HÔM NAY (VÒNG VỀ ĐÍCH)</div>
+          <div style="font-size: 1rem; color: #fff; margin-top: 8px;">
+            Vòng Về Đích! Mỗi đội 1 tình huống <strong>thực tiễn</strong> vận dụng bài học 1930 – 1945 (4 lựa chọn A-B-C-D). Đúng nhận (+30đ/câu). Nếu sai, các đội khác có cơ hội <strong>CƯỚP ĐIỂM (+10đ)</strong>!
+          </div>
+        </div>
+      </div>
+
+      <div style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 18px 24px; margin-top: 10px;">
+        <h4 style="color: var(--gold-400); font-size: 1.1rem; margin-bottom: 8px;">CƠ CHẾ CƯỚP ĐIỂM (CHỈ ÁP DỤNG CHO CÂU CÓ TỪ 3-4 ĐÁP ÁN):</h4>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+          Để đảm bảo tính công bằng và trí tuệ, cơ chế <strong>CƯỚP ĐIỂM</strong> chỉ kích hoạt ở các vòng có từ 3 đến 4 đáp án (Vòng 2 & Vòng 4). Riêng các vòng chỉ có 2 lựa chọn như <strong>Vòng 1 (Đúng/Sai)</strong> và <strong>Vòng 3 (Vận dụng/Cần tránh)</strong>, khi đội thi chọn sai thì đáp án còn lại chắc chắn đúng nên hệ thống sẽ công bố ngay kết quả và mở giải thích (không cướp điểm).
+        </p>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+        <button class="btn btn-gold" onclick="document.getElementById('rulesModal').classList.remove('active')">
+          <span>ĐÃ HIỂU LUẬT CHƠI</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Entry Script -->
+</body>
+</html>

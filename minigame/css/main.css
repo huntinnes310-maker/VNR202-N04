@@ -1,0 +1,242 @@
+/* Main Layout & Base Styles - Đấu Trường Đạo Đức */
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+/* Background Atmosphere */
+.app-viewport {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(167, 22, 40, 0.28) 0%, transparent 60%),
+    radial-gradient(circle at 10% 85%, rgba(66, 41, 0, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(123, 16, 30, 0.25) 0%, transparent 45%),
+    var(--bg-deep);
+  overflow: hidden;
+}
+
+/* Canvas layers */
+#particleCanvas, #confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#particleCanvas {
+  z-index: 1;
+}
+
+#confettiCanvas {
+  z-index: 999;
+}
+
+/* Subtle Golden Grid Lines */
+.bg-grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Main Container (16:9 Presentation friendly) */
+.stage-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1680px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 32px 24px;
+}
+
+/* Global Top HUD Bar */
+.top-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 20px;
+  transition: all var(--transition-normal);
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--gold-400), var(--crimson-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+}
+
+.brand-titles h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #fff, var(--gold-300));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.brand-titles span {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Live Round Progress Tracker */
+.round-tracker-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.round-pill {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-400);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.question-counter-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Action Controls in HUD */
+.hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* HUD Live Mini Scores Bar */
+.hud-scores-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  max-width: 580px;
+  padding: 4px;
+}
+
+.hud-team-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.hud-team-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--gold-500);
+}
+
+.hud-team-chip .score-val {
+  color: var(--gold-400);
+  font-weight: 800;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* Screen Wrapper */
+.screen-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+  animation: fadeInScreen 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInScreen {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.35);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.6);
+}

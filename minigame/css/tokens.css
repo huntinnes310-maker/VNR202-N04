@@ -1,0 +1,78 @@
+/* Design Tokens - Đấu Trường Đạo Đức: Premium Vietnamese TV Gameshow */
+:root {
+  /* Colors - Vietnamese Revolutionary Heritage meets Modern Television Stage */
+  --crimson-950: #120204;
+  --crimson-900: #200407;
+  --crimson-800: #3b070e;
+  --crimson-700: #5c0b15;
+  --crimson-600: #85101f;
+  --crimson-500: #b91c1c;
+  --crimson-400: #dc2626;
+  
+  /* Vietnamese Bronze & Royal Gold Palette */
+  --gold-900: #362204;
+  --gold-800: #573708;
+  --gold-700: #7c4f0b;
+  --gold-600: #a77014;
+  --gold-500: #c98e1e;
+  --gold-400: #d4af37;
+  --gold-300: #eecf6d;
+  --gold-200: #f7df8f;
+  --gold-100: #fdf6dc;
+
+  /* TV Studio Dark Slate & Obsidian Stage */
+  --bg-deep: #07090d;
+  --bg-surface: #0d1118;
+  --bg-surface-elevated: #131822;
+  --bg-glass: rgba(13, 17, 24, 0.82);
+  --bg-glass-heavy: rgba(9, 12, 18, 0.94);
+  --border-glass: rgba(212, 175, 55, 0.22);
+  --border-glass-bright: rgba(245, 215, 127, 0.55);
+
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #7b8798;
+  --text-gold: #f5d77f;
+
+  --accent-emerald: #10b981;
+  --accent-emerald-soft: rgba(16, 185, 129, 0.15);
+  --accent-crimson: #ef4444;
+  --accent-crimson-soft: rgba(239, 68, 68, 0.15);
+  --accent-cyan: #0ea5e9;
+
+  /* Typography */
+  --font-heading: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Broadcast Television Shadows & Physical Hardware Bevels */
+  --glow-gold: 0 2px 14px rgba(212, 175, 55, 0.28);
+  --glow-gold-lg: 0 4px 22px rgba(212, 175, 55, 0.4);
+  --glow-crimson: 0 2px 14px rgba(185, 28, 28, 0.35);
+  
+  --shadow-card: 0 8px 24px -4px rgba(0, 0, 0, 0.7);
+  --shadow-floating: 0 16px 36px -6px rgba(0, 0, 0, 0.85);
+  --shadow-console: 0 4px 16px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.3);
+
+  /* Metallic Gradients & Bevels */
+  --gradient-gold-metal: linear-gradient(180deg, #f7df8f 0%, #d4af37 42%, #aa7a18 80%, #8c6210 100%);
+  --gradient-gold-hover: linear-gradient(180deg, #fff1b8 0%, #e5be4a 40%, #be8b1e 80%, #9e7014 100%);
+  --gradient-dark-console: linear-gradient(180deg, #18202d 0%, #0f141f 100%);
+  --metallic-bevel-top: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --gold-hairline: 1px solid rgba(212, 175, 55, 0.25);
+  --gold-hairline-bright: 1px solid rgba(245, 215, 127, 0.6);
+
+  /* Architectural Radii (Clean, sharp television broadcast equipment) */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Snappy Broadcast Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+  --transition-normal: 0.24s cubic-bezier(0.2, 0, 0.2, 1);
+  --transition-subtle: 0.35s ease;
+}

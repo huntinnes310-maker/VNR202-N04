@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 450" width="100%" height="100%" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="skyFade" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a050c" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#3b0811" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#140205" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="farMountain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a0d16" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#180407" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="midMountain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#67121f" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#100305" stop-opacity="0.75"/>
+    </linearGradient>
+    <linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97706" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#F59E0B" stop-opacity="0.18"/>
+      <stop offset="70%" stop-color="#FDE68A" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#B45309" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Far Distant Karst Mountain Peaks (Dãy núi xa) -->
+  <path d="M 0 350 L 80 280 L 160 320 L 260 250 L 380 340 L 490 260 L 600 320 L 720 230 L 840 330 L 960 240 L 1090 310 L 1220 220 L 1360 330 L 1490 250 L 1620 320 L 1760 240 L 1860 310 L 1920 270 L 1920 450 L 0 450 Z" 
+        fill="url(#farMountain)" />
+
+  <!-- Mid Range Mountain Silhouette (Dãy núi trung) -->
+  <path d="M 0 390 L 120 310 L 250 370 L 390 290 L 520 380 L 680 300 L 810 370 L 980 290 L 1120 380 L 1290 280 L 1440 370 L 1590 300 L 1740 380 L 1880 310 L 1920 350 L 1920 450 L 0 450 Z" 
+        fill="url(#midMountain)" />
+
+  <!-- Winding Golden River Reflection (Dòng sông gấm vóc) -->
+  <path d="M 0 440 C 350 410, 600 445, 950 415 C 1300 385, 1600 435, 1920 405 L 1920 450 L 0 450 Z" 
+        fill="url(#riverGrad)" />
+
+  <!-- Fine River Ripple Lines -->
+  <path d="M 120 432 C 400 415, 750 435, 1100 418 C 1450 400, 1750 430, 1920 415" 
+        stroke="#FDE68A" stroke-width="1.2" fill="none" opacity="0.3" stroke-dasharray="80,120"/>
+  <path d="M 0 442 C 300 425, 650 445, 1000 425 C 1350 408, 1700 438, 1850 422" 
+        stroke="#F59E0B" stroke-width="1" fill="none" opacity="0.2" stroke-dasharray="120,160"/>
+</svg>

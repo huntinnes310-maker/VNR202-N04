@@ -1,0 +1,420 @@
+/* Vietnam Epic Theme Stylesheet - Đấu Trường Đạo Đức */
+
+/* ================= 1. DONG SON DRUM ROTATING BACKDROP ================= */
+.dong-son-backdrop {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  max-width: 90vw;
+  max-height: 90vh;
+  transform: translate(-50%, -50%);
+  background-image: url('../assets/dong_son_drum.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 2;
+  animation: slowDrumRotate 240s linear infinite;
+  transition: opacity 0.5s ease;
+}
+
+@keyframes slowDrumRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Landscape Silhouette Layer (Mountains & Golden River) */
+.vietnam-landscape-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 280px;
+  background-image: url('../assets/vietnam_landscape.svg');
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.65;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Canvas layer for Vietnam visuals (Clouds, Birds, Spotlights) */
+#vietnamCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ================= 2. CINEMATIC INTRO OVERLAY ================= */
+.cinematic-intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #06080d;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.cinematic-intro-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-light-beam {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(254, 240, 138, 0.25), transparent);
+  transform: skewX(-25deg);
+  pointer-events: none;
+}
+
+.intro-drum-motif {
+  width: 320px;
+  height: 320px;
+  background-image: url('../assets/dong_son_drum.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: scale(0.8) rotate(-40deg);
+  filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.5));
+}
+
+.intro-title-box {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.intro-main-title {
+  font-size: 3.8rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #fff 15%, var(--gold-300) 65%, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.intro-sub-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold-400);
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+}
+
+.intro-skip-btn {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.intro-skip-btn:hover {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--gold-300);
+  border-color: var(--gold-400);
+}
+
+/* ================= 3. DONG SON DRUM TIMER ================= */
+.dong-son-timer-wrapper {
+  position: relative;
+  width: 105px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-drum-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('../assets/dong_son_drum.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.4));
+  animation: timerDrumSpin 40s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes timerDrumSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.timer-progress-svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.timer-progress-circle {
+  fill: none;
+  stroke: var(--gold-400);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 283; /* 2 * PI * 45 */
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.8s linear, stroke 0.3s ease;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+}
+
+.dong-son-timer-digits {
+  position: relative;
+  z-index: 5;
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  color: #fff;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.9), 0 2px 4px #000;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+/* Warning state at <= 5s */
+.dong-son-timer-wrapper.warning .timer-progress-circle {
+  stroke: #ef4444;
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.9));
+}
+
+.dong-son-timer-wrapper.warning .timer-drum-bg {
+  filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.7));
+  animation-duration: 15s;
+}
+
+.dong-son-timer-wrapper.warning .dong-son-timer-digits {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(239, 68, 68, 1);
+}
+
+/* Extreme pulse at <= 3s */
+.dong-son-timer-wrapper.urgent .dong-son-timer-digits {
+  animation: urgentDigitPulse 0.5s infinite alternate;
+}
+
+@keyframes urgentDigitPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.22); color: #fecaca; }
+}
+
+/* Timeout Screen Shake */
+@keyframes timeoutVibe {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-4px, 4px); }
+  40% { transform: translate(4px, -4px); }
+  60% { transform: translate(-3px, 1px); }
+  80% { transform: translate(3px, -2px); }
+}
+
+.screen-shake {
+  animation: timeoutVibe 0.4s ease;
+}
+
+/* ================= 4. QUESTION CARD ENHANCEMENT ================= */
+.question-card-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Corner Dong Son Motif Watermarks */
+.question-card-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 140px;
+  height: 140px;
+  background-image: url('../assets/dong_son_drum.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.question-card-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  width: 120px;
+  height: 120px;
+  background-image: url('../assets/dong_son_drum.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+/* ================= 5. ROUND TRANSITION SWEEPER ================= */
+.round-sweep-banner {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, rgba(14, 18, 28, 0.94), rgba(4, 6, 12, 0.98));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.round-sweep-banner.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sweep-drum-center {
+  width: 240px;
+  height: 240px;
+  background-image: url('../assets/dong_son_drum.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 35px rgba(245, 158, 11, 0.65));
+  animation: sweepDrumZoom 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sweepDrumZoom {
+  0% { transform: scale(0.6) rotate(-30deg); opacity: 0; }
+  40% { transform: scale(1.08) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.sweep-title-text {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sweep-light-bar {
+  width: 320px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-300), transparent);
+  margin-top: 14px;
+  animation: sweepBarExpand 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sweepBarExpand {
+  0% { width: 0; opacity: 0; }
+  100% { width: 450px; opacity: 1; }
+}
+
+/* ================= 6. CORRECT ANSWER CELEBRATION ================= */
+.correct-celebration-toast {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: linear-gradient(135deg, rgba(6, 78, 59, 0.96), rgba(16, 185, 129, 0.96));
+  border: 1px solid #34d399;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 22px 42px;
+  text-align: center;
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  animation: correctToastAnim 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.correct-celebration-toast h3 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.correct-celebration-toast .pts-tag {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  color: #fde68a;
+  margin-top: 6px;
+}
+
+@keyframes correctToastAnim {
+  0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+  25% { transform: translate(-50%, -50%) scale(1.04); opacity: 1; }
+  45% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  85% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -70%) scale(0.9); opacity: 0; }
+}
+
+/* ================= 7. INCORRECT GENTLE FEEDBACK ================= */
+.incorrect-gentle-toast {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: linear-gradient(135deg, rgba(127, 29, 29, 0.95), rgba(185, 28, 28, 0.95));
+  border: 1px solid #f87171;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 16px rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 18px 36px;
+  text-align: center;
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  animation: incorrectToastAnim 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.incorrect-gentle-toast h3 {
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+@keyframes incorrectToastAnim {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+  20% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+  80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -60%) scale(0.9); opacity: 0; }
+}
+
+/* ================= 8. DRAMATIC STEAL MODE ================= */
+body.steal-mode-active .app-viewport {
+  background: radial-gradient(circle at 50% 20%, rgba(220, 38, 38, 0.38) 0%, rgba(10, 13, 20, 0.95) 70%);
+}
+
+body.steal-mode-active .dong-son-backdrop {
+  opacity: 0.18;
+  filter: hue-rotate(-20deg);
+  animation-duration: 60s;
+}
