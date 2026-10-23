@@ -13,7 +13,6 @@ const SOLO_RULES = {
   4: 'Vòng Về Đích: tình huống thực tiễn, chọn cách xử lý đúng nhất trong 4 lựa chọn.'
 };
 const TOTAL_QUESTIONS = ROUNDS_CONFIG.reduce((n, r) => n + (QUESTIONS_DATA[r.id] || []).length, 0);
-const LB_KEY = 'VNR202_N04_SOLO_LEADERBOARD';
 
 const app = document.getElementById('app');
 const confetti = new ConfettiEngine('confettiCanvas');
@@ -34,11 +33,24 @@ const shuffle = arr => {
 // Điểm = điểm gốc của vòng × (50% + 50% thời gian còn lại)
 const scoreFor = (round, timeLeft) => Math.round(round.pointsPerQuestion * (0.5 + 0.5 * timeLeft / round.timeLimit));
 
-const loadBoard = () => {
-  try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; } catch { return []; }
+// Bảng điểm dùng chung (Supabase). Khóa publishable được phép public; RLS chỉ cho đọc + thêm.
+const SB_URL = 'https://pxhloqvelbvefgnryoxw.supabase.co/rest/v1/scores';
+const SB_HEADERS = { apikey: 'sb_publishable_wnT5PZIYc_q96yty0JBXYw_UEcdQe83', 'Content-Type': 'application/json' };
+
+// Top điểm của ngày hôm nay (theo giờ máy người chơi); lỗi mạng thì trả về bảng rỗng
+const loadBoard = async (limit = 10) => {
+  const since = new Date().setHours(0, 0, 0, 0);
+  const qs = `created_at=gte.${encodeURIComponent(new Date(since).toISOString())}&order=score.desc,created_at.asc&limit=${limit}`;
+  try {
+    const res = await fetch(`${SB_URL}?${qs}`, { headers: SB_HEADERS });
+    return res.ok ? await res.json() : [];
+  } catch { return []; }
 };
-const saveBoard = board => {
-  try { localStorage.setItem(LB_KEY, JSON.stringify(board)); } catch { /* chế độ ẩn danh: bỏ qua */ }
+const saveScore = async entry => {
+  try {
+    const res = await fetch(SB_URL, { method: 'POST', headers: { ...SB_HEADERS, Prefer: 'return=representation' }, body: JSON.stringify(entry) });
+    return res.ok ? (await res.json())[0] : null;
+  } catch { return null; }
 };
 
 let state = { name: '', questions: [], idx: 0, score: 0, correct: 0, answers: [], timeLeft: 0, timer: null, locked: false };
@@ -94,7 +106,6 @@ function renderRoundIntro(round) {
 
 // ================= MÀN HÌNH BẮT ĐẦU =================
 function renderStart() {
-  const board = loadBoard().slice(0, 5);
   app.innerHTML = `
     <section class="card start-card">
       <div class="eyebrow">VNR202 • NHÓM 4</div>
@@ -113,13 +124,18 @@ function renderStart() {
         <li>Sau mỗi câu có giải thích để bạn ôn lại kiến thức.</li>
       </ul>
 
-      ${board.length ? `
-        <div class="mini-board">
-          <div class="mini-title">BẢNG XẾP HẠNG TRÊN MÁY NÀY</div>
-          ${boardHtml(board)}
-        </div>` : ''}
+      <div class="mini-board" id="todayBoard" hidden>
+        <div class="mini-title">BẢNG XẾP HẠNG HÔM NAY</div>
+        <div class="board-body"></div>
+      </div>
     </section>
   `;
+  loadBoard(5).then(board => {
+    const box = document.getElementById('todayBoard');
+    if (!box || !board.length) return; // người chơi đã rời màn hình này, hoặc chưa có ai chơi
+    box.querySelector('.board-body').innerHTML = boardHtml(board);
+    box.hidden = false;
+  });
   const input = document.getElementById('playerName');
   input.focus();
   document.getElementById('startForm').onsubmit = e => {
@@ -242,10 +258,7 @@ function boardHtml(board, highlightAt = -1) {
 
 function renderResult() {
   const total = state.questions.length;
-  const entry = { name: state.name, score: state.score, correct: state.correct, total, at: Date.now() };
-  const board = [...loadBoard(), entry].sort((a, b) => b.score - a.score || a.at - b.at).slice(0, 10);
-  saveBoard(board);
-  const myRank = board.indexOf(entry);
+  const entry = { name: state.name, score: state.score, correct: state.correct, total };
 
   const pct = state.correct / total;
   const verdict = pct >= 0.8 ? 'Xuất sắc! Bạn nắm rất chắc bài.' : pct >= 0.5 ? 'Khá tốt! Ôn thêm vài ý là hoàn hảo.' : 'Cần ôn lại bài nhé!';
@@ -260,8 +273,8 @@ function renderResult() {
       <p class="sub">Đúng <b>${state.correct}/${total}</b> câu • ${verdict}</p>
 
       <div class="mini-board">
-        <div class="mini-title">BẢNG XẾP HẠNG TRÊN MÁY NÀY</div>
-        ${boardHtml(board, myRank)}
+        <div class="mini-title">BẢNG XẾP HẠNG HÔM NAY</div>
+        <div class="board-body"><p class="sub">Đang tải bảng xếp hạng...</p></div>
       </div>
 
       <details class="review">
@@ -279,6 +292,13 @@ function renderResult() {
       </div>
     </section>
   `;
+  saveScore(entry).then(async saved => {
+    const board = await loadBoard();
+    const body = app.querySelector('.board-body');
+    if (!body) return; // người chơi đã chuyển màn hình
+    body.innerHTML = board.length ? boardHtml(board, board.findIndex(r => r.id === saved?.id))
+      : '<p class="sub">Không tải được bảng xếp hạng (kiểm tra kết nối mạng).</p>';
+  });
   document.getElementById('againBtn').onclick = () => {
     sound.playClick();
     startGame();
