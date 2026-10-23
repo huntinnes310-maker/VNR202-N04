@@ -46,6 +46,17 @@ const loadBoard = async (limit = 10) => {
     return res.ok ? await res.json() : [];
   } catch { return []; }
 };
+// Tải bảng ngay rồi cứ 5 giây tải lại; tự dừng khi phần tử `el` bị gỡ khỏi trang (người chơi đổi màn hình)
+const POLL_MS = 5000;
+const pollBoard = (limit, el, apply) => {
+  const tick = async () => {
+    if (!el.isConnected) return clearInterval(timer);
+    const board = await loadBoard(limit);
+    if (el.isConnected) apply(board);
+  };
+  const timer = setInterval(tick, POLL_MS);
+  tick();
+};
 const saveScore = async entry => {
   try {
     const res = await fetch(SB_URL, { method: 'POST', headers: { ...SB_HEADERS, Prefer: 'return=representation' }, body: JSON.stringify(entry) });
@@ -130,9 +141,9 @@ function renderStart() {
       </div>
     </section>
   `;
-  loadBoard(5).then(board => {
-    const box = document.getElementById('todayBoard');
-    if (!box || !board.length) return; // người chơi đã rời màn hình này, hoặc chưa có ai chơi
+  const box = document.getElementById('todayBoard');
+  pollBoard(5, box, board => {
+    if (!board.length) return; // chưa có ai chơi, hoặc lỗi mạng: giữ nguyên
     box.querySelector('.board-body').innerHTML = boardHtml(board);
     box.hidden = false;
   });
@@ -292,13 +303,11 @@ function renderResult() {
       </div>
     </section>
   `;
-  saveScore(entry).then(async saved => {
-    const board = await loadBoard();
-    const body = app.querySelector('.board-body');
-    if (!body) return; // người chơi đã chuyển màn hình
-    body.innerHTML = board.length ? boardHtml(board, board.findIndex(r => r.id === saved?.id))
-      : '<p class="sub">Không tải được bảng xếp hạng (kiểm tra kết nối mạng).</p>';
-  });
+  const body = app.querySelector('.board-body');
+  saveScore(entry).then(saved => pollBoard(10, body, board => {
+    if (board.length) body.innerHTML = boardHtml(board, board.findIndex(r => r.id === saved?.id));
+    else if (!body.querySelector('.board')) body.innerHTML = '<p class="sub">Không tải được bảng xếp hạng (kiểm tra kết nối mạng).</p>';
+  }));
   document.getElementById('againBtn').onclick = () => {
     sound.playClick();
     startGame();
